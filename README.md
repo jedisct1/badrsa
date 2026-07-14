@@ -10,6 +10,20 @@ Run them only in a disposable environment with explicit wall, CPU, and memory li
 
 `bad-secret-keys/` targets signing and contains a private key, derived public key, the six-byte `kaboom` input, and matching binary and URL-safe base64 signatures for each case.
 
+## Operation cost
+
+The graphs compare every operation-capable malicious fixture with a freshly generated 2048-bit RSA control using `e=65537`.
+Each point is the median of three fresh OpenSSL processes, and the whiskers show the observed range.
+Wall time includes process startup and key loading, while peak resident set size covers the complete OpenSSL process.
+
+Measurements used OpenSSL 3.6.3 on arm64 macOS with SHA-256 and PKCS#1 v1.5 padding.
+
+Signing uses a logarithmic time axis because the cases span nearly four orders of magnitude.
+
+![RSA verification time and peak memory for a standard key and malicious public keys](docs/benchmarks/rsa-verify-profile.svg)
+
+![RSA signing time and peak memory for a standard key and malicious secret keys](docs/benchmarks/rsa-sign-profile.svg)
+
 ## Public-key cases
 
 OpenSSL 3.6.3 applies different rules while loading, checking, and using a public key.
@@ -37,24 +51,6 @@ Operation-capable directories also contain their source private key, the `kaboom
 
 The arithmetic width boundaries are finite and the generated cases reach them exactly.
 Parser integer sizes have no finite RSA policy maximum, so the two new defaults use 256 Mbit fields and `--parser-bits` supports larger controlled experiments.
-
-Fresh-process measurements used OpenSSL 3.6.3 on arm64 macOS.
-Verification used 11 samples, encryption used 7, and `pubcheck` used 3.
-Values are median milliseconds with the observed range in parentheses.
-
-| Case                            |              Verify |             Encrypt |                `pubcheck` |
-| ------------------------------- | ------------------: | ------------------: | ------------------------: |
-| `large-modulus`                 | 5.574 (5.331-5.854) | 6.075 (5.577-6.250) | 420.043 (418.507-420.186) |
-| `maximum-modulus-and-exponent`  | 7.200 (7.013-7.474) | 7.524 (7.403-8.123) | 419.222 (418.929-420.288) |
-| `maximum-unrestricted-exponent` | 7.662 (7.352-8.050) | 7.979 (7.775-8.465) |      9.547 (9.507-10.334) |
-
-The two earlier dense 64-bit cases verified in 7.460 ms (6.926-7.909) and 7.339 ms (7.088-7.690).
-
-Three-sample parser-load profiles measured 88.8 MiB peak RSS for `huge-modulus-and-exponent`, 313.3 MiB for `huge-modulus`, and 313.3 MiB for `huge-public-exponent`.
-
-Their median load times were 51.886 ms, 152.198 ms, and 158.049 ms.
-
-The huge-exponent case also passed `pubcheck` in 572.111 ms (564.848-573.127) with 313.8 MiB peak RSS.
 
 ## Secret-key cases
 
