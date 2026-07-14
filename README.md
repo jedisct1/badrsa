@@ -1,10 +1,12 @@
 # Expensive RSA keys
 
-This repository contains synthetic RSA keys designed to consume excessive resources during public or private operations, especially in OpenSSL.
+This repository contains synthetic RSA keys designed to consume excessive resources during public or private operations, while being accepted by default by OpenSSL.
 
 They are test fixtures, not operational credentials.
 
 Run them only in a disposable environment with explicit wall, CPU, and memory limits.
+
+Do not run them on a remote service using OpenSSL and accepting arbitrary user-supplied keys without additional validation.
 
 `bad-public-keys/` targets verification and encryption.
 
