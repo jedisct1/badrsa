@@ -1,4 +1,4 @@
-# Malicious RSA keys
+# Expensive RSA keys
 
 This repository contains synthetic RSA keys designed to consume excessive resources during public or private operations, especially in OpenSSL.
 
