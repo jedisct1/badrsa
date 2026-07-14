@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1100" height="500" viewBox="0 0 1100 500" role="img" aria-labelledby="title desc">
 <title id="title">RSA verify time and peak memory</title>
-<desc id="desc">Median wall time and peak resident memory for a standard 2048-bit key and malicious RSA fixtures. Whiskers show the observed range across three samples.</desc>
+<desc id="desc">Median wall time and peak resident memory from 7 fresh processes for a standard 2048-bit key and malicious RSA fixtures.</desc>
 <rect width="100%" height="100%" rx="12" fill="#ffffff"/>
-<style>text{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172033}.title{font-size:24px;font-weight:700}.heading{font-size:16px;font-weight:650}.label{font-size:14px}.tick{font-size:12px;fill:#5b6472}.note{font-size:12px;fill:#5b6472}.grid{stroke:#dce1e8;stroke-width:1}.range{stroke-width:3;stroke-linecap:round}.cap{stroke-width:2}</style>
+<style>text{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172033}.title{font-size:24px;font-weight:700}.heading{font-size:16px;font-weight:650}.label{font-size:14px}.tick{font-size:12px;fill:#5b6472}.note{font-size:12px;fill:#5b6472}.grid{stroke:#dce1e8;stroke-width:1}</style>
 <text class="title" x="24" y="38">RSA Verify Cost</text>
 <circle cx="840" cy="30" r="5" fill="#2563eb"/><text class="tick" x="852" y="34">standard</text>
 <circle cx="936" cy="30" r="5" fill="#dc2626"/><text class="tick" x="948" y="34">malicious</text>
@@ -33,58 +33,22 @@
 <line class="grid" x1="1035.0" y1="110" x2="1035.0" y2="442"/>
 <text class="tick" x="1035.0" y="102" text-anchor="middle">5.30</text>
 <text class="label" x="236" y="125" text-anchor="end">Standard 2048-bit</text>
-<line class="range" stroke="#2563eb" x1="318.2" y1="120" x2="335.7" y2="120"/>
-<line class="cap" stroke="#2563eb" x1="318.2" y1="115" x2="318.2" y2="125"/>
-<line class="cap" stroke="#2563eb" x1="335.7" y1="115" x2="335.7" y2="125"/>
-<circle cx="330.8" cy="120" r="6" fill="#2563eb" stroke="#ffffff" stroke-width="2"/>
-<line class="range" stroke="#2563eb" x1="794.4" y1="120" x2="812.6" y2="120"/>
-<line class="cap" stroke="#2563eb" x1="794.4" y1="115" x2="794.4" y2="125"/>
-<line class="cap" stroke="#2563eb" x1="812.6" y1="115" x2="812.6" y2="125"/>
+<circle cx="233.5" cy="120" r="6" fill="#2563eb" stroke="#ffffff" stroke-width="2"/>
 <circle cx="812.6" cy="120" r="6" fill="#2563eb" stroke="#ffffff" stroke-width="2"/>
 <text class="label" x="236" y="179" text-anchor="end">Large modulus + exponent</text>
-<line class="range" stroke="#dc2626" x1="435.7" y1="174" x2="534.8" y2="174"/>
-<line class="cap" stroke="#dc2626" x1="435.7" y1="169" x2="435.7" y2="179"/>
-<line class="cap" stroke="#dc2626" x1="534.8" y1="169" x2="534.8" y2="179"/>
-<circle cx="516.2" cy="174" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
-<line class="range" stroke="#dc2626" x1="885.5" y1="174" x2="903.8" y2="174"/>
-<line class="cap" stroke="#dc2626" x1="885.5" y1="169" x2="885.5" y2="179"/>
-<line class="cap" stroke="#dc2626" x1="903.8" y1="169" x2="903.8" y2="179"/>
+<circle cx="411.9" cy="174" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
 <circle cx="885.5" cy="174" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
 <text class="label" x="236" y="233" text-anchor="end">Large modulus + exponent 2</text>
-<line class="range" stroke="#dc2626" x1="493.5" y1="228" x2="525.8" y2="228"/>
-<line class="cap" stroke="#dc2626" x1="493.5" y1="223" x2="493.5" y2="233"/>
-<line class="cap" stroke="#dc2626" x1="525.8" y1="223" x2="525.8" y2="233"/>
-<circle cx="500.3" cy="228" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
-<line class="range" stroke="#dc2626" x1="885.5" y1="228" x2="903.8" y2="228"/>
-<line class="cap" stroke="#dc2626" x1="885.5" y1="223" x2="885.5" y2="233"/>
-<line class="cap" stroke="#dc2626" x1="903.8" y1="223" x2="903.8" y2="233"/>
-<circle cx="903.8" cy="228" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<circle cx="404.8" cy="228" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<circle cx="885.5" cy="228" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
 <text class="label" x="236" y="287" text-anchor="end">Large modulus</text>
-<line class="range" stroke="#dc2626" x1="373.7" y1="282" x2="416.5" y2="282"/>
-<line class="cap" stroke="#dc2626" x1="373.7" y1="277" x2="373.7" y2="287"/>
-<line class="cap" stroke="#dc2626" x1="416.5" y1="277" x2="416.5" y2="287"/>
-<circle cx="380.6" cy="282" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
-<line class="range" stroke="#dc2626" x1="867.3" y1="282" x2="885.5" y2="282"/>
-<line class="cap" stroke="#dc2626" x1="867.3" y1="277" x2="867.3" y2="287"/>
-<line class="cap" stroke="#dc2626" x1="885.5" y1="277" x2="885.5" y2="287"/>
-<circle cx="867.3" cy="282" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<circle cx="267.4" cy="282" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<circle cx="885.5" cy="282" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
 <text class="label" x="236" y="341" text-anchor="end">Maximum modulus + exponent</text>
-<line class="range" stroke="#dc2626" x1="492.1" y1="336" x2="495.7" y2="336"/>
-<line class="cap" stroke="#dc2626" x1="492.1" y1="331" x2="492.1" y2="341"/>
-<line class="cap" stroke="#dc2626" x1="495.7" y1="331" x2="495.7" y2="341"/>
-<circle cx="495.6" cy="336" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
-<line class="range" stroke="#dc2626" x1="885.5" y1="336" x2="903.8" y2="336"/>
-<line class="cap" stroke="#dc2626" x1="885.5" y1="331" x2="885.5" y2="341"/>
-<line class="cap" stroke="#dc2626" x1="903.8" y1="331" x2="903.8" y2="341"/>
+<circle cx="394.1" cy="336" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
 <circle cx="903.8" cy="336" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
 <text class="label" x="236" y="395" text-anchor="end">Maximum unrestricted exponent</text>
-<line class="range" stroke="#dc2626" x1="506.6" y1="390" x2="540.1" y2="390"/>
-<line class="cap" stroke="#dc2626" x1="506.6" y1="385" x2="506.6" y2="395"/>
-<line class="cap" stroke="#dc2626" x1="540.1" y1="385" x2="540.1" y2="395"/>
-<circle cx="536.0" cy="390" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
-<line class="range" stroke="#dc2626" x1="812.6" y1="390" x2="812.6" y2="390"/>
-<line class="cap" stroke="#dc2626" x1="812.6" y1="385" x2="812.6" y2="395"/>
-<line class="cap" stroke="#dc2626" x1="812.6" y1="385" x2="812.6" y2="395"/>
-<circle cx="812.6" cy="390" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
-<text class="note" x="250" y="480">Dots are medians; whiskers are observed minima and maxima (3 fresh processes per case).</text>
+<circle cx="423.4" cy="390" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<circle cx="830.8" cy="390" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<text class="note" x="250" y="480">Dots show medians from 7 fresh processes per case.</text>
 </svg>
