@@ -20,18 +20,18 @@
 <line class="grid" x1="490.0" y1="116" x2="490.0" y2="676"/>
 <text class="tick" x="490.0" y="108" text-anchor="middle">100x</text>
 <line class="grid" x1="595.0" y1="116" x2="595.0" y2="676"/>
-<text class="tick" x="595.0" y="108" text-anchor="middle">1,000x</text>
+<text class="tick" x="595.0" y="108" text-anchor="middle">1000x</text>
 <line class="grid" x1="700.0" y1="116" x2="700.0" y2="676"/>
-<text class="tick" x="700.0" y="108" text-anchor="middle">10,000x</text>
+<text class="tick" x="700.0" y="108" text-anchor="middle">10000x</text>
 <text class="label" x="256" y="159" text-anchor="end">Combined worst case</text>
 <line x1="280.0" y1="154" x2="697.8" y2="154" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
 <circle cx="697.8" cy="154" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
-<text class="value" x="728" y="159">9,535x</text>
+<text class="value" x="728" y="159">9535x</text>
 <text class="measured" x="940" y="159" text-anchor="end">51.681 s</text>
 <text class="label" x="256" y="209" text-anchor="end">Large public exponent</text>
 <line x1="280.0" y1="204" x2="696.8" y2="204" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
 <circle cx="696.8" cy="204" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
-<text class="value" x="728" y="209">9,332x</text>
+<text class="value" x="728" y="209">9332x</text>
 <text class="measured" x="940" y="209" text-anchor="end">50.580 s</text>
 <text class="label" x="256" y="259" text-anchor="end">Large modulus</text>
 <line x1="280.0" y1="254" x2="509.5" y2="254" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>

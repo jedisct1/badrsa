@@ -55,7 +55,7 @@ def format_time_ratio(ratio):
         return f"{ratio:.2f}x"
     if ratio < 100:
         return f"{ratio:.1f}x"
-    return f"{ratio:,.0f}x"
+    return f"{ratio:.0f}x"
 
 
 def format_mib_difference(value):
@@ -67,7 +67,7 @@ def format_mib_difference(value):
 
 def axis(metric, operation):
     if metric == "time" and operation == "sign":
-        ticks = [(value, f"{value:,}x") for value in (1, 10, 100, 1000, 10000)]
+        ticks = [(value, f"{value}x") for value in (1, 10, 100, 1000, 10000)]
         return 1, 10000, ticks, True
     if metric == "time":
         ticks = [(value / 10, f"{value / 10:.1f}x") for value in range(10, 17)]

@@ -56,7 +56,7 @@ Measurements used OpenSSL 3.6.3 on arm64 macOS with SHA-256 and PKCS#1 v1.5 padd
 
 The signing-time graph uses a logarithmic ratio axis.
 
-![Signing time ranges from 3.06x to 9,535x the standard 2048-bit control](docs/benchmarks/rsa-sign-time-overhead.svg)
+![Signing time ranges from 3.06x to 9535x the standard 2048-bit control](docs/benchmarks/rsa-sign-time-overhead.svg)
 
 ![Signing peak RSS exceeds the standard 2048-bit control by 0.078 to 1.047 MiB](docs/benchmarks/rsa-sign-memory-overhead.svg)
 
@@ -65,8 +65,8 @@ The signing-time graph uses a logarithmic ratio axis.
 
 | Fixture                      |   Time vs. control |   Peak RSS vs. control |
 | ---------------------------- | -----------------: | ---------------------: |
-| Combined worst case          |  9,535x (51.681 s) | +1.031 MiB (6.469 MiB) |
-| Large public exponent        |  9,332x (50.580 s) | +1.047 MiB (6.484 MiB) |
+| Combined worst case          |   9535x (51.681 s) | +1.031 MiB (6.469 MiB) |
+| Large public exponent        |   9332x (50.580 s) | +1.047 MiB (6.484 MiB) |
 | Large modulus                |  153x (830.822 ms) | +0.406 MiB (5.844 MiB) |
 | Repeated prime               |  107x (580.420 ms) | +0.250 MiB (5.688 MiB) |
 | Inconsistent CRT coefficient | 93.5x (506.858 ms) | +0.297 MiB (5.734 MiB) |
