@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="698" viewBox="0 0 960 698" role="img" aria-labelledby="title desc">
+<title id="title">RSA verification wall time ratio relative to baseline</title>
+<desc id="desc">Wall time ratio from reported medians of 7 fresh processes. Fixtures are compared with a standard 2048-bit RSA control and ranked from highest to lowest.</desc>
+<rect width="100%" height="100%" rx="12" fill="#ffffff"/>
+<style>text{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172033}.title{font-size:24px;font-weight:700}.subtitle{font-size:14px;fill:#556070}.heading{font-size:13px;font-weight:650;fill:#394457}.label{font-size:14px}.value{font-size:14px;font-weight:650}.measured{font-size:13px;fill:#556070}.tick{font-size:12px;fill:#626d7d}.note{font-size:12px;fill:#626d7d}.grid{stroke:#dce2ea;stroke-width:1}.baseline{stroke:#2563eb;stroke-width:2;stroke-dasharray:5 4}</style>
+<text class="title" x="24" y="38">RSA Verification Time vs. 2048-bit Control</text>
+<text class="subtitle" x="24" y="64">Control median: 4.788 ms (1.00x)</text>
+<text class="heading" x="280" y="92">Time ratio</text>
+<text class="heading" x="728" y="92">Ratio</text>
+<text class="heading" x="940" y="92" text-anchor="end">Median time</text>
+<rect x="12" y="182" width="936" height="44" rx="6" fill="#f6f8fb"/>
+<rect x="12" y="282" width="936" height="44" rx="6" fill="#f6f8fb"/>
+<rect x="12" y="382" width="936" height="44" rx="6" fill="#f6f8fb"/>
+<rect x="12" y="482" width="936" height="44" rx="6" fill="#f6f8fb"/>
+<rect x="12" y="582" width="936" height="44" rx="6" fill="#f6f8fb"/>
+<line class="baseline" x1="280.0" y1="116" x2="280.0" y2="626"/>
+<text class="tick" x="280.0" y="108" text-anchor="middle">1.0x</text>
+<line class="grid" x1="350.0" y1="116" x2="350.0" y2="626"/>
+<text class="tick" x="350.0" y="108" text-anchor="middle">1.1x</text>
+<line class="grid" x1="420.0" y1="116" x2="420.0" y2="626"/>
+<text class="tick" x="420.0" y="108" text-anchor="middle">1.2x</text>
+<line class="grid" x1="490.0" y1="116" x2="490.0" y2="626"/>
+<text class="tick" x="490.0" y="108" text-anchor="middle">1.3x</text>
+<line class="grid" x1="560.0" y1="116" x2="560.0" y2="626"/>
+<text class="tick" x="560.0" y="108" text-anchor="middle">1.4x</text>
+<line class="grid" x1="630.0" y1="116" x2="630.0" y2="626"/>
+<text class="tick" x="630.0" y="108" text-anchor="middle">1.5x</text>
+<line class="grid" x1="700.0" y1="116" x2="700.0" y2="626"/>
+<text class="tick" x="700.0" y="108" text-anchor="middle">1.6x</text>
+<text class="label" x="256" y="159" text-anchor="end">Negative encoded integers</text>
+<line x1="280.0" y1="154" x2="676.8" y2="154" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="676.8" cy="154" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="159">1.57x</text>
+<text class="measured" x="940" y="159" text-anchor="end">7.502 ms</text>
+<text class="label" x="256" y="209" text-anchor="end">Maximum unrestricted exponent</text>
+<line x1="280.0" y1="204" x2="636.8" y2="204" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="636.8" cy="204" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="209">1.51x</text>
+<text class="measured" x="940" y="209" text-anchor="end">7.229 ms</text>
+<text class="label" x="256" y="259" text-anchor="end">Large modulus + exponent</text>
+<line x1="280.0" y1="254" x2="615.3" y2="254" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="615.3" cy="254" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="259">1.48x</text>
+<text class="measured" x="940" y="259" text-anchor="end">7.082 ms</text>
+<text class="label" x="256" y="309" text-anchor="end">Large modulus + exponent 2</text>
+<line x1="280.0" y1="304" x2="602.0" y2="304" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="602.0" cy="304" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="309">1.46x</text>
+<text class="measured" x="940" y="309" text-anchor="end">6.991 ms</text>
+<text class="label" x="256" y="359" text-anchor="end">Maximum modulus + allowed exponent</text>
+<line x1="280.0" y1="354" x2="581.9" y2="354" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="581.9" cy="354" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="359">1.43x</text>
+<text class="measured" x="940" y="359" text-anchor="end">6.853 ms</text>
+<text class="label" x="256" y="409" text-anchor="end">Small-factor modulus</text>
+<line x1="280.0" y1="404" x2="413.6" y2="404" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="413.6" cy="404" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="409">1.19x</text>
+<text class="measured" x="940" y="409" text-anchor="end">5.702 ms</text>
+<text class="label" x="256" y="459" text-anchor="end">Prime-square modulus</text>
+<line x1="280.0" y1="454" x2="403.1" y2="454" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="403.1" cy="454" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="459">1.18x</text>
+<text class="measured" x="940" y="459" text-anchor="end">5.630 ms</text>
+<text class="label" x="256" y="509" text-anchor="end">Identity public exponent</text>
+<line x1="280.0" y1="504" x2="391.4" y2="504" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="391.4" cy="504" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="509">1.16x</text>
+<text class="measured" x="940" y="509" text-anchor="end">5.550 ms</text>
+<text class="label" x="256" y="559" text-anchor="end">Prime modulus</text>
+<line x1="280.0" y1="554" x2="362.1" y2="554" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="362.1" cy="554" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="559">1.12x</text>
+<text class="measured" x="940" y="559" text-anchor="end">5.350 ms</text>
+<text class="label" x="256" y="609" text-anchor="end">Large modulus</text>
+<line x1="280.0" y1="604" x2="343.7" y2="604" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="343.7" cy="604" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="609">1.09x</text>
+<text class="measured" x="940" y="609" text-anchor="end">5.224 ms</text>
+<text class="note" x="280" y="672">Ratio of 7-process medians. Linear scale.</text>
+</svg>

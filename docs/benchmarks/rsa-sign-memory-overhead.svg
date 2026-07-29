@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="748" viewBox="0 0 960 748" role="img" aria-labelledby="title desc">
+<title id="title">RSA signing peak resident memory difference relative to baseline</title>
+<desc id="desc">Peak resident memory difference from reported medians of 7 fresh processes. Fixtures are compared with a standard 2048-bit RSA control and ranked from highest to lowest.</desc>
+<rect width="100%" height="100%" rx="12" fill="#ffffff"/>
+<style>text{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172033}.title{font-size:24px;font-weight:700}.subtitle{font-size:14px;fill:#556070}.heading{font-size:13px;font-weight:650;fill:#394457}.label{font-size:14px}.value{font-size:14px;font-weight:650}.measured{font-size:13px;fill:#556070}.tick{font-size:12px;fill:#626d7d}.note{font-size:12px;fill:#626d7d}.grid{stroke:#dce2ea;stroke-width:1}.baseline{stroke:#2563eb;stroke-width:2;stroke-dasharray:5 4}</style>
+<text class="title" x="24" y="38">RSA Signing Peak RSS vs. 2048-bit Control</text>
+<text class="subtitle" x="24" y="64">Control median: 5.438 MiB (0 MiB difference)</text>
+<text class="heading" x="280" y="92">RSS difference (MiB)</text>
+<text class="heading" x="728" y="92">Difference</text>
+<text class="heading" x="940" y="92" text-anchor="end">Median peak RSS</text>
+<rect x="12" y="182" width="936" height="44" rx="6" fill="#f6f8fb"/>
+<rect x="12" y="282" width="936" height="44" rx="6" fill="#f6f8fb"/>
+<rect x="12" y="382" width="936" height="44" rx="6" fill="#f6f8fb"/>
+<rect x="12" y="482" width="936" height="44" rx="6" fill="#f6f8fb"/>
+<rect x="12" y="582" width="936" height="44" rx="6" fill="#f6f8fb"/>
+<line class="baseline" x1="280.0" y1="116" x2="280.0" y2="676"/>
+<text class="tick" x="280.0" y="108" text-anchor="middle">+0.00</text>
+<line class="grid" x1="375.5" y1="116" x2="375.5" y2="676"/>
+<text class="tick" x="375.5" y="108" text-anchor="middle">+0.25</text>
+<line class="grid" x1="470.9" y1="116" x2="470.9" y2="676"/>
+<text class="tick" x="470.9" y="108" text-anchor="middle">+0.50</text>
+<line class="grid" x1="566.4" y1="116" x2="566.4" y2="676"/>
+<text class="tick" x="566.4" y="108" text-anchor="middle">+0.75</text>
+<line class="grid" x1="661.8" y1="116" x2="661.8" y2="676"/>
+<text class="tick" x="661.8" y="108" text-anchor="middle">+1.00</text>
+<text class="label" x="256" y="159" text-anchor="end">Large public exponent</text>
+<line x1="280.0" y1="154" x2="679.7" y2="154" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="679.7" cy="154" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="159">+1.047 MiB</text>
+<text class="measured" x="940" y="159" text-anchor="end">6.484 MiB</text>
+<text class="label" x="256" y="209" text-anchor="end">Combined worst case</text>
+<line x1="280.0" y1="204" x2="673.8" y2="204" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="673.8" cy="204" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="209">+1.031 MiB</text>
+<text class="measured" x="940" y="209" text-anchor="end">6.469 MiB</text>
+<text class="label" x="256" y="259" text-anchor="end">Large modulus</text>
+<line x1="280.0" y1="254" x2="435.1" y2="254" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="435.1" cy="254" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="259">+0.406 MiB</text>
+<text class="measured" x="940" y="259" text-anchor="end">5.844 MiB</text>
+<text class="label" x="256" y="309" text-anchor="end">Oversized CRT exponents</text>
+<line x1="280.0" y1="304" x2="393.4" y2="304" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="393.4" cy="304" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="309">+0.297 MiB</text>
+<text class="measured" x="940" y="309" text-anchor="end">5.734 MiB</text>
+<text class="label" x="256" y="359" text-anchor="end">Inconsistent CRT coefficient</text>
+<line x1="280.0" y1="354" x2="393.4" y2="354" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="393.4" cy="354" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="359">+0.297 MiB</text>
+<text class="measured" x="940" y="359" text-anchor="end">5.734 MiB</text>
+<text class="label" x="256" y="409" text-anchor="end">Repeated prime</text>
+<line x1="280.0" y1="404" x2="375.5" y2="404" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="375.5" cy="404" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="409">+0.250 MiB</text>
+<text class="measured" x="940" y="409" text-anchor="end">5.688 MiB</text>
+<text class="label" x="256" y="459" text-anchor="end">Ignored other-prime record</text>
+<line x1="280.0" y1="454" x2="345.6" y2="454" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="345.6" cy="454" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="459">+0.172 MiB</text>
+<text class="measured" x="940" y="459" text-anchor="end">5.609 MiB</text>
+<text class="label" x="256" y="509" text-anchor="end">Unknown private version</text>
+<line x1="280.0" y1="504" x2="345.6" y2="504" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="345.6" cy="504" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="509">+0.172 MiB</text>
+<text class="measured" x="940" y="509" text-anchor="end">5.609 MiB</text>
+<text class="label" x="256" y="559" text-anchor="end">Zero private exponent</text>
+<line x1="280.0" y1="554" x2="339.7" y2="554" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="339.7" cy="554" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="559">+0.156 MiB</text>
+<text class="measured" x="940" y="559" text-anchor="end">5.594 MiB</text>
+<text class="label" x="256" y="609" text-anchor="end">Unrelated private factors</text>
+<line x1="280.0" y1="604" x2="339.7" y2="604" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="339.7" cy="604" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="609">+0.156 MiB</text>
+<text class="measured" x="940" y="609" text-anchor="end">5.594 MiB</text>
+<text class="label" x="256" y="659" text-anchor="end">Identity exponents</text>
+<line x1="280.0" y1="654" x2="309.8" y2="654" stroke="#d45500" stroke-width="7" stroke-linecap="round"/>
+<circle cx="309.8" cy="654" r="6" fill="#d45500" stroke="#ffffff" stroke-width="2"/>
+<text class="value" x="728" y="659">+0.078 MiB</text>
+<text class="measured" x="940" y="659" text-anchor="end">5.516 MiB</text>
+<text class="note" x="280" y="722">Difference of 7-process medians.</text>
+</svg>
