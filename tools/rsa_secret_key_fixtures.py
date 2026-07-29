@@ -33,7 +33,23 @@ class Case:
     dense_private_exponent: bool = False
     dense_crt_exponents: bool = False
     inconsistent_coefficient: bool = False
+    identity_exponents: bool = False
+    zero_private_exponent: bool = False
+    unrelated_private_factors: bool = False
+    zero_other_prime_info: bool = False
+    private_version: int | None = None
+    repeated_prime: bool = False
     openssl_verifies: bool = True
+
+
+class PrivateKeyFields(list[int]):
+    def __init__(
+        self,
+        values: list[int],
+        other_prime_infos: tuple[tuple[int, int, int], ...] = (),
+    ) -> None:
+        super().__init__(values)
+        self.other_prime_infos = other_prime_infos
 
 
 CASES = {
@@ -51,6 +67,12 @@ CASES = {
             inconsistent_coefficient=True,
             openssl_verifies=False,
         ),
+        Case("identity-exponents", identity_exponents=True),
+        Case("zero-private-exponent", zero_private_exponent=True),
+        Case("unrelated-private-factors", unrelated_private_factors=True),
+        Case("two-prime-version-with-other-primes", zero_other_prime_info=True),
+        Case("unknown-private-version", private_version=2),
+        Case("repeated-prime", repeated_prime=True),
     )
 }
 
@@ -122,7 +144,7 @@ def encode_pem(label: str, der: bytes) -> str:
     return "\n".join(lines) + "\n"
 
 
-def parse_private_key(path: Path) -> list[int]:
+def parse_private_key(path: Path) -> PrivateKeyFields:
     der = decode_pem(path)
     tag, pkcs8, end = read_tlv(der)
     if tag != 0x30 or end != len(der):
@@ -134,13 +156,42 @@ def parse_private_key(path: Path) -> list[int]:
     if tag != 0x30 or end != len(outer[2][1]):
         raise ValueError("expected one RSAPrivateKey sequence")
     fields = children(pkcs1)
-    if len(fields) != 9 or any(tag != 0x02 for tag, _ in fields):
+    if len(fields) not in (9, 10) or any(tag != 0x02 for tag, _ in fields[:9]):
         raise ValueError("expected the nine two-prime RSA fields")
-    return [int.from_bytes(value, "big") for _, value in fields]
+    other_prime_infos = ()
+    if len(fields) == 10:
+        if fields[9][0] != 0x30:
+            raise ValueError("expected OtherPrimeInfos after the two-prime fields")
+        infos = []
+        for tag, encoded_info in children(fields[9][1]):
+            if tag != 0x30:
+                raise ValueError("expected an OtherPrimeInfo sequence")
+            info = children(encoded_info)
+            if len(info) != 3 or any(item_tag != 0x02 for item_tag, _ in info):
+                raise ValueError("expected three integers in OtherPrimeInfo")
+            infos.append(tuple(int.from_bytes(value, "big") for _, value in info))
+        if not infos:
+            raise ValueError("OtherPrimeInfos must not be empty")
+        other_prime_infos = tuple(infos)
+    return PrivateKeyFields(
+        [int.from_bytes(value, "big") for _, value in fields[:9]],
+        other_prime_infos,
+    )
 
 
 def write_private_key(path: Path, fields: list[int]) -> None:
-    pkcs1 = der_sequence(*(der_integer(value) for value in fields))
+    values = [der_integer(value) for value in fields]
+    other_prime_infos = getattr(fields, "other_prime_infos", ())
+    if other_prime_infos:
+        values.append(
+            der_sequence(
+                *(
+                    der_sequence(*(der_integer(value) for value in info))
+                    for info in other_prime_infos
+                )
+            )
+        )
+    pkcs1 = der_sequence(*values)
     pkcs8 = der_sequence(
         der_integer(0),
         RSA_ENCRYPTION_ALGORITHM,
@@ -174,11 +225,13 @@ def validate_base(fields: list[int]) -> None:
         d_q == d % (q - 1),
         q * q_inv % p == 1,
     )
-    if not all(checks):
+    if not all(checks) or getattr(fields, "other_prime_infos", ()):
         raise ValueError("base key does not have consistent two-prime RSA parameters")
 
 
-def powered_key(base: list[int], power: int) -> tuple[list[int], int, int, int]:
+def powered_key(
+    base: list[int], power: int
+) -> tuple[PrivateKeyFields, int, int, int]:
     _, _, e, _, base_p, base_q, _, _, _ = base
     p = pow(base_p, power)
     q = pow(base_q, power)
@@ -187,21 +240,86 @@ def powered_key(base: list[int], power: int) -> tuple[list[int], int, int, int]:
     lambda_q = pow(base_q, power - 1) * (base_q - 1)
     lambda_n = lcm(lambda_p, lambda_q)
     d = pow(e, -1, lambda_n)
-    fields = [
-        0,
-        n,
-        e,
-        d,
-        p,
-        q,
-        d % lambda_p,
-        d % lambda_q,
-        pow(q, -1, p),
-    ]
+    fields = PrivateKeyFields(
+        [
+            0,
+            n,
+            e,
+            d,
+            p,
+            q,
+            d % lambda_p,
+            d % lambda_q,
+            pow(q, -1, p),
+        ]
+    )
     return fields, lambda_p, lambda_q, lambda_n
 
 
-def build_case(base: list[int], case: Case, e_bits: int) -> list[int]:
+def assert_case_invariants(
+    base: list[int], case: Case, fields: PrivateKeyFields
+) -> None:
+    regular, _, _, _ = powered_key(base, case.power)
+    version, n, e, d, p, q, d_p, d_q, q_inv = fields
+
+    if case.identity_exponents:
+        if not (
+            version == 0
+            and (n, p, q, q_inv) == (regular[1], regular[4], regular[5], regular[8])
+            and (e, d, d_p, d_q) == (1, 1, 1, 1)
+            and not fields.other_prime_infos
+        ):
+            raise ValueError(f"{case.name}: identity-exponent invariants failed")
+    elif case.zero_private_exponent:
+        if not (
+            fields[:3] == regular[:3]
+            and d == 0
+            and fields[4:] == regular[4:]
+            and not fields.other_prime_infos
+        ):
+            raise ValueError(f"{case.name}: zero-private-exponent invariants failed")
+    elif case.unrelated_private_factors:
+        if not (
+            fields[:4] == regular[:4]
+            and (p, q) == (3, 5)
+            and d_p == d % 2
+            and d_q == d % 4
+            and q_inv == 2
+            and n != p * q
+            and not fields.other_prime_infos
+        ):
+            raise ValueError(f"{case.name}: unrelated-factor invariants failed")
+    elif case.zero_other_prime_info:
+        if not (
+            list(fields) == list(regular)
+            and version == 0
+            and fields.other_prime_infos == ((0, 0, 0),)
+        ):
+            raise ValueError(f"{case.name}: OtherPrimeInfos invariants failed")
+    elif case.private_version is not None:
+        if not (
+            version == case.private_version
+            and fields[1:] == regular[1:]
+            and not fields.other_prime_infos
+        ):
+            raise ValueError(f"{case.name}: private-version invariants failed")
+    elif case.repeated_prime:
+        base_p = base[4]
+        lambda_n = base_p * (base_p - 1)
+        if not (
+            version == 0
+            and n == base_p * base_p
+            and e == 65537
+            and e * d % lambda_n == 1
+            and p == q == base_p
+            and d_p == d_q == d % (base_p - 1)
+            and q_inv == 0
+            and not fields.other_prime_infos
+        ):
+            raise ValueError(f"{case.name}: repeated-prime invariants failed")
+
+
+def build_case(base: list[int], case: Case, e_bits: int) -> PrivateKeyFields:
     fields, lambda_p, lambda_q, lambda_n = powered_key(base, case.power)
     n_bits = fields[1].bit_length()
     if case.large_e:
@@ -213,6 +331,32 @@ def build_case(base: list[int], case: Case, e_bits: int) -> list[int]:
         fields[7] = dense_congruent(fields[7], lambda_q, n_bits)
     if case.inconsistent_coefficient:
         fields[8] += 1
+    if case.identity_exponents:
+        fields[2] = fields[3] = fields[6] = fields[7] = 1
+    if case.zero_private_exponent:
+        fields[3] = 0
+    if case.unrelated_private_factors:
+        fields[4] = 3
+        fields[5] = 5
+        fields[6] = fields[3] % 2
+        fields[7] = fields[3] % 4
+        fields[8] = 2
+    if case.zero_other_prime_info:
+        fields.other_prime_infos = ((0, 0, 0),)
+    if case.private_version is not None:
+        fields[0] = case.private_version
+    if case.repeated_prime:
+        p = base[4]
+        lambda_n = p * (p - 1)
+        fields[1] = p * p
+        fields[2] = 65537
+        fields[3] = pow(fields[2], -1, lambda_n)
+        fields[4] = p
+        fields[5] = p
+        fields[6] = fields[3] % (p - 1)
+        fields[7] = fields[6]
+        fields[8] = 0
+    assert_case_invariants(base, case, fields)
     return fields
 
 
@@ -253,6 +397,18 @@ def verify_signature(fields: list[int], message: bytes, signature: bytes) -> Non
     encoded = recovered.to_bytes(modulus_bytes, "big")
     if encoded != expected_encoded_message(message, modulus_bytes):
         raise ValueError("signature does not contain the expected SHA-256 digest")
+
+
+def assert_signature_invariants(
+    case: Case, fields: list[int], signature: bytes
+) -> None:
+    if not case.identity_exponents:
+        return
+    modulus_bytes = (fields[1].bit_length() + 7) // 8
+    encoded = int.from_bytes(expected_encoded_message(MESSAGE, modulus_bytes), "big")
+    expected = encoded.to_bytes(modulus_bytes, "big")
+    if signature != expected:
+        raise ValueError(f"{case.name}: signature does not match its construction")
 
 
 def openssl_public_key(key: Path, output: Path, timeout: float) -> None:
@@ -361,11 +517,16 @@ def check_case(
 ) -> None:
     expected_fields = build_case(base, case, e_bits)
     actual_fields = parse_private_key(directory / "rsa_key.pem")
-    if actual_fields != expected_fields:
+    if (
+        list(actual_fields) != list(expected_fields)
+        or actual_fields.other_prime_infos != expected_fields.other_prime_infos
+    ):
         raise ValueError(f"{case.name}: private-key fields differ from the construction")
+    assert_case_invariants(base, case, actual_fields)
     if (directory / "input.txt").read_bytes() != MESSAGE:
         raise ValueError(f"{case.name}: input.txt differs from the corpus payload")
     signature = (directory / "signature.bin").read_bytes()
+    assert_signature_invariants(case, actual_fields, signature)
     encoded = base64.urlsafe_b64encode(signature).rstrip(b"=")
     if (directory / "signature.b64").read_bytes() != encoded:
         raise ValueError(f"{case.name}: signature.b64 does not match signature.bin")
@@ -468,6 +629,8 @@ def inspect(args: argparse.Namespace) -> None:
         summary = ", ".join(
             f"{name}={value.bit_length()}" for name, value in zip(names, fields)
         )
+        if fields.other_prime_infos:
+            summary += f", otherPrimeInfos={len(fields.other_prime_infos)}"
         print(f"{case.name}: {summary}")
 
 

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="500" viewBox="0 0 1100 500" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="824" viewBox="0 0 1100 824" role="img" aria-labelledby="title desc">
 <title id="title">RSA sign time and peak memory</title>
 <desc id="desc">Median wall time and peak resident memory from 7 fresh processes for a standard 2048-bit key and malicious RSA fixtures.</desc>
 <rect width="100%" height="100%" rx="12" fill="#ffffff"/>
@@ -8,29 +8,29 @@
 <circle cx="936" cy="30" r="5" fill="#dc2626"/><text class="tick" x="948" y="34">malicious</text>
 <text class="heading" x="250" y="78">Median wall time (log scale)</text>
 <text class="heading" x="685" y="78">Median peak RSS (MiB)</text>
-<line class="grid" x1="274.5" y1="110" x2="274.5" y2="442"/>
+<line class="grid" x1="274.5" y1="110" x2="274.5" y2="766"/>
 <text class="tick" x="274.5" y="102" text-anchor="middle">10 ms</text>
-<line class="grid" x1="355.9" y1="110" x2="355.9" y2="442"/>
+<line class="grid" x1="355.9" y1="110" x2="355.9" y2="766"/>
 <text class="tick" x="355.9" y="102" text-anchor="middle">100 ms</text>
-<line class="grid" x1="437.2" y1="110" x2="437.2" y2="442"/>
+<line class="grid" x1="437.2" y1="110" x2="437.2" y2="766"/>
 <text class="tick" x="437.2" y="102" text-anchor="middle">1 s</text>
-<line class="grid" x1="518.6" y1="110" x2="518.6" y2="442"/>
+<line class="grid" x1="518.6" y1="110" x2="518.6" y2="766"/>
 <text class="tick" x="518.6" y="102" text-anchor="middle">10 s</text>
-<line class="grid" x1="600.0" y1="110" x2="600.0" y2="442"/>
+<line class="grid" x1="600.0" y1="110" x2="600.0" y2="766"/>
 <text class="tick" x="600.0" y="102" text-anchor="middle">100 s</text>
-<line class="grid" x1="711.9" y1="110" x2="711.9" y2="442"/>
+<line class="grid" x1="711.9" y1="110" x2="711.9" y2="766"/>
 <text class="tick" x="711.9" y="102" text-anchor="middle">5.4</text>
-<line class="grid" x1="765.8" y1="110" x2="765.8" y2="442"/>
+<line class="grid" x1="765.8" y1="110" x2="765.8" y2="766"/>
 <text class="tick" x="765.8" y="102" text-anchor="middle">5.6</text>
-<line class="grid" x1="819.6" y1="110" x2="819.6" y2="442"/>
+<line class="grid" x1="819.6" y1="110" x2="819.6" y2="766"/>
 <text class="tick" x="819.6" y="102" text-anchor="middle">5.8</text>
-<line class="grid" x1="873.5" y1="110" x2="873.5" y2="442"/>
+<line class="grid" x1="873.5" y1="110" x2="873.5" y2="766"/>
 <text class="tick" x="873.5" y="102" text-anchor="middle">6.0</text>
-<line class="grid" x1="927.3" y1="110" x2="927.3" y2="442"/>
+<line class="grid" x1="927.3" y1="110" x2="927.3" y2="766"/>
 <text class="tick" x="927.3" y="102" text-anchor="middle">6.2</text>
-<line class="grid" x1="981.2" y1="110" x2="981.2" y2="442"/>
+<line class="grid" x1="981.2" y1="110" x2="981.2" y2="766"/>
 <text class="tick" x="981.2" y="102" text-anchor="middle">6.4</text>
-<line class="grid" x1="1035.0" y1="110" x2="1035.0" y2="442"/>
+<line class="grid" x1="1035.0" y1="110" x2="1035.0" y2="766"/>
 <text class="tick" x="1035.0" y="102" text-anchor="middle">6.6</text>
 <text class="label" x="236" y="125" text-anchor="end">Standard 2048-bit</text>
 <circle cx="252.8" cy="120" r="6" fill="#2563eb" stroke="#ffffff" stroke-width="2"/>
@@ -50,5 +50,23 @@
 <text class="label" x="236" y="395" text-anchor="end">Combined worst case</text>
 <circle cx="576.7" cy="390" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
 <circle cx="999.7" cy="390" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
-<text class="note" x="250" y="480">Dots show medians from 7 fresh processes per case.</text>
+<text class="label" x="236" y="449" text-anchor="end">Identity exponents</text>
+<circle cx="292.4" cy="444" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<circle cx="743.1" cy="444" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<text class="label" x="236" y="503" text-anchor="end">Zero private exponent</text>
+<circle cx="365.6" cy="498" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<circle cx="764.1" cy="498" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<text class="label" x="236" y="557" text-anchor="end">Unrelated private factors</text>
+<circle cx="410.3" cy="552" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<circle cx="764.1" cy="552" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<text class="label" x="236" y="611" text-anchor="end">Ignored other-prime record</text>
+<circle cx="365.5" cy="606" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<circle cx="768.3" cy="606" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<text class="label" x="236" y="665" text-anchor="end">Unknown private version</text>
+<circle cx="366.1" cy="660" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<circle cx="768.3" cy="660" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<text class="label" x="236" y="719" text-anchor="end">Repeated prime</text>
+<circle cx="418.0" cy="714" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<circle cx="789.3" cy="714" r="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<text class="note" x="250" y="804">Dots show medians from 7 fresh processes per case.</text>
 </svg>
