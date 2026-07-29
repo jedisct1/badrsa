@@ -1,6 +1,12 @@
 # Expensive RSA keys
 
-This repository contains synthetic RSA keys designed to expose pathological behavior or consume excessive resources while being accepted by OpenSSL at a documented gate.
+This repository contains synthetic RSA keys designed to expose pathological behavior or consume excessive resources.
+
+With the default provider, OpenSSL's normal [PEM key-loading APIs](https://docs.openssl.org/3.6/man3/PEM_read_bio_PrivateKey/) load these keys and return an `EVP_PKEY`.
+
+Key loading and [key validation](https://docs.openssl.org/3.6/man3/EVP_PKEY_check/) are separate API calls, and loading does not enforce application-specific size or cost limits.
+
+An application that passes untrusted keys to these APIs without additional checks will therefore load them and may incur unexpected CPU and memory costs during loading or later signing, verification, or encryption.
 
 They are test fixtures, not operational credentials.
 
@@ -15,15 +21,21 @@ Do not run them on a remote service using OpenSSL and accepting arbitrary user-s
 ## Operation cost
 
 The verification graph compares every SHA-256 PKCS#1 v1.5 fixture with an expected successful verification against a freshly generated 2048-bit RSA control using `e=65537`.
+
 The signing graph compares every secret fixture with the same control.
+
 The time graphs divide each reported median by the matching control median and rank fixtures by the resulting ratio.
+
 The memory graphs subtract the control median and show the difference in whole-process peak RSS.
 Every label retains the absolute median so the comparison does not hide the measured scale.
 
 Time and peak memory are split because the signing-time ratios span nearly four orders of magnitude while whole-process RSS changes by less than 20 percent.
+
 Each result is the median of seven fresh OpenSSL processes.
 Wall time includes process startup and key loading, while peak resident set size covers the complete OpenSSL process.
+
 Small RSS differences close to zero include whole-process measurement variation and should not be interpreted as exact algorithm allocations.
+
 The CSV contains reported medians only, so the graphs do not imply uncertainty estimates or statistically significant differences.
 
 Measurements used OpenSSL 3.6.3 on arm64 macOS with SHA-256 and PKCS#1 v1.5 padding.
@@ -83,23 +95,30 @@ The [reported medians](docs/benchmarks/rsa-operation-profile.csv) are checked in
 
 ## Public-key cases
 
-OpenSSL 3.6.3 applies different rules while loading, checking, and using a public key.
+OpenSSL 3.6.3 treats loading, `pkey -pubcheck`, and public-key operations as separate steps.
+Every key in this section loads through the default provider.
 
 The default provider applies no RSA width policy while loading ASN.1 integers, while `pkey -pubcheck` limits the modulus to 16384 bits but does not cap the exponent or require `e < n`.
 
 `pkey -pubcheck` also rejects exponents below three, small modulus factors, prime moduli, and prime-power moduli.
+
 The low-level public operation path does not repeat those arithmetic checks.
 
 Public exponentiation requires `n <= 16384` and `e < n`; when `n > 3072`, it also requires `e <= 64` bits.
-This branch prevents one key from combining the 16384-bit modulus limit with the dense 3072-bit exponent used by `maximum-unrestricted-exponent`.
+
+This rule prevents one key from combining the 16384-bit modulus limit with the dense 3072-bit exponent used by `maximum-unrestricted-exponent`.
 
 Those boundaries are defined in [`rsa.h`](https://github.com/openssl/openssl/blob/openssl-3.6.3/include/openssl/rsa.h#L38-L57) and enforced in [`rsa_ossl.c`](https://github.com/openssl/openssl/blob/openssl-3.6.3/crypto/rsa/rsa_ossl.c#L106-L130).
 
-`Load` below means successful default-provider decoding through `openssl pkey -pubin -noout`.
+`Load` below means that the default provider decodes the key through OpenSSL's normal key-loading API.
+
+The checker exercises the same decoding path with `openssl pkey -pubin -noout`.
+
 Every verification case contains the `kaboom` input and matching binary and URL-safe base64 signatures.
+
 Cases with a reusable source private key also contain `rsa_key.pem`.
 
-| Case                                    | Construction                                                          | OpenSSL acceptance                | Intended pressure                                     |
+| Case                                    | Construction                                                          | Operations that succeed           | Intended pressure                                     |
 | --------------------------------------- | --------------------------------------------------------------------- | --------------------------------- | ----------------------------------------------------- |
 | `all-zeros`                             | Zero-valued `n` and `e` with 1001-byte and 101-byte INTEGER encodings | Load                              | Noncanonical parser input                             |
 | `huge-modulus-and-exponent`             | 80000000-bit all-ones `n` and 8000-bit all-ones `e`                   | Load                              | Existing 10 MB DER parser case                        |
@@ -108,26 +127,33 @@ Cases with a reusable source private key also contain `rsa_key.pem`.
 | `zero-public-exponent`                  | Valid 16384-bit `n` and `e=0`                                         | Load, encrypt                     | Every OAEP ciphertext is integer one                  |
 | `identity-public-exponent`              | Valid 16384-bit `n` and `e=1`                                         | Load, verify, encrypt             | The encoded message itself is a valid signature       |
 | `negative-encoded-modulus-and-exponent` | Valid `n` and `e` encoded as negative ASN.1 INTEGERs                  | Load, `pubcheck`, verify, encrypt | Signed DER values are imported as unsigned magnitudes |
-| `prime-modulus`                         | Known 8192-bit prime `n` and `e=65537`                                | Load, verify, encrypt             | Prime modulus accepted by public operations           |
-| `prime-square-modulus`                  | `n=p^2` for a known 8192-bit prime and `e=65537`                      | Load, verify, encrypt             | Prime-power modulus accepted by public operations     |
-| `small-factor-modulus`                  | `n=3q` for a known 8192-bit prime and `e=65537`                       | Load, verify, encrypt             | Factor-three modulus accepted by public operations    |
+| `prime-modulus`                         | Known 8192-bit prime `n` and `e=65537`                                | Load, verify, encrypt             | Prime modulus used in public operations               |
+| `prime-square-modulus`                  | `n=p^2` for a known 8192-bit prime and `e=65537`                      | Load, verify, encrypt             | Prime-power modulus used in public operations         |
+| `small-factor-modulus`                  | `n=3q` for a known 8192-bit prime and `e=65537`                       | Load, verify, encrypt             | Factor-three modulus used in public operations        |
 | `invalid-pss-trailer`                   | RSA-PSS restriction with salt length zero and `trailerField=2`        | Load, `pubcheck`, PSS verify      | Provider ignores an invalid PSS trailer restriction   |
-| `large-modulus-large-exponent`          | 16384-bit `n` and dense 64-bit `e=0xffffffffffffffc5`                 | Load, `pubcheck`, verify, encrypt | Existing accepted arithmetic case                     |
-| `large-modulus-large-exponent2`         | Independent key with the same widths and exponent                     | Load, `pubcheck`, verify, encrypt | Existing accepted arithmetic case                     |
-| `large-modulus`                         | 16384-bit `n` and `e=65537`                                           | Load, `pubcheck`, verify, encrypt | Maximum accepted modulus in isolation                 |
+| `large-modulus-large-exponent`          | 16384-bit `n` and dense 64-bit `e=0xffffffffffffffc5`                 | Load, `pubcheck`, verify, encrypt | Dense modulus and exponent arithmetic                 |
+| `large-modulus-large-exponent2`         | Independent key with the same widths and exponent                     | Load, `pubcheck`, verify, encrypt | Independent dense arithmetic case                     |
+| `large-modulus`                         | 16384-bit `n` and `e=65537`                                           | Load, `pubcheck`, verify, encrypt | Largest modulus with a small exponent                 |
 | `maximum-modulus-and-exponent`          | 16384-bit `n` and `e=2^64-1`                                          | Load, `pubcheck`, verify, encrypt | Exact joint operation limits                          |
-| `maximum-unrestricted-exponent`         | 3072-bit `n` and dense 3072-bit `e` with weight 3059                  | Load, `pubcheck`, verify, encrypt | Largest exponent width below the 64-bit policy branch |
+| `maximum-unrestricted-exponent`         | 3072-bit `n` and dense 3072-bit `e` with weight 3059                  | Load, `pubcheck`, verify, encrypt | Largest exponent before the 64-bit limit applies      |
 
 The arithmetic width boundaries are finite and the generated cases reach them exactly.
 Parser integer sizes have no finite RSA policy maximum, so the two new defaults use 256 Mbit fields and `--parser-bits` supports larger controlled experiments.
 
 The invalid RSA-PSS key uses SHA-1, PSS padding, and a zero-length salt so its signature is deterministic.
+
 OpenSSL 3.6.3 copies the unverified trailer restriction in [`rsa_backend.c`](https://github.com/openssl/openssl/blob/openssl-3.6.3/crypto/rsa/rsa_backend.c#L584-L618), but the provider signature path in [`rsa_sig.c.in`](https://github.com/openssl/openssl/blob/openssl-3.6.3/providers/implementations/signature/rsa_sig.c.in#L542-L595) never consults it.
+
 The legacy validation path explicitly rejects trailer fields other than one in [`rsa_ameth.c`](https://github.com/openssl/openssl/blob/openssl-3.6.3/crypto/rsa/rsa_ameth.c#L592-L605).
 
 ## Secret-key cases
 
-All timings below use seven fresh OpenSSL processes with SHA-256 and PKCS#1 v1.5 padding. They were measured with OpenSSL 3.6.3 on arm64 macOS.
+Every private key in this section loads through the default provider and can sign.
+Loading, `openssl pkey -check`, signing, and public verification are separate operations.
+
+All timings below use seven fresh OpenSSL processes with SHA-256 and PKCS#1 v1.5 padding.
+
+They were measured with OpenSSL 3.6.3 on arm64 macOS.
 
 The original 16384-bit key signs in about 0.122 seconds on the same host.
 
@@ -139,8 +165,9 @@ The original 16384-bit key signs in about 0.122 seconds on the same host.
 | `large-public-exponent`             | Replaces `e` with a dense congruent representative modulo `lambda(n)`    | `n=16384`, `e=1048576`       |         50.580 s |
 | `combined-worst-case`               | Combines dense maximum-width private exponents, large `e`, and `qInv+1`  | `e=1048576`, `d=dP=dQ=16384` |         51.681 s |
 
-The semantic secret-key cases are operational even though their redundant fields or encodings violate RSA expectations.
-Private `pkey -check` is reported as a separate validation gate, not as the signing acceptance test.
+The secret-key cases below can sign even though their redundant fields or encodings violate RSA expectations.
+
+The table reports `openssl pkey -check` separately because that command does not determine whether OpenSSL can sign with a key.
 
 | Case                                  | Construction                                                 | `pkey -check` | Median sign time |
 | ------------------------------------- | ------------------------------------------------------------ | ------------- | ---------------: |
@@ -162,4 +189,5 @@ OpenSSL selects CRT whenever all CRT fields are present.
 It uses the stored `dP` and `dQ`, checks the result by exponentiating with `e`, and recomputes with full `d` when inconsistent CRT data fails that check.
 
 The PKCS#1 decoder accepts optional `OtherPrimeInfos` for every version, but OpenSSL initializes and validates those records only when the version is exactly one.
+
 Undefined private-key versions also follow the ordinary two-prime path.
